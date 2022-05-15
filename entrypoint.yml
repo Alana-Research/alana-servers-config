@@ -1,0 +1,12 @@
+---
+
+- name: Config Entrypoint
+  hosts: "localhost"
+  connection: "local"
+  become: true
+  roles:
+     - { role: users, tags: users }
+     - { role: tools, tags: tools }
+     - { role: network, tags: network }
+     - { role: security, tags: security }
+

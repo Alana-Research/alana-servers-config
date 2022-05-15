@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo ""
+echo "##### System Info #####"
+uname -a
+echo ""
+echo "##### Disk Usage #####"
+df -h | grep -w "/"
+echo ""
+echo "##### CPU, MEM Usage #####"
+ps -e -o pcpu,pmem --sort=pcpu | cut -d" " -f1-5 | awk 'BEGIN {cpu=0;mem=0} {cpu+=$1; mem+=$2} END {print cpu,mem}'
+echo ""
+echo "##### LAST CONNECTIONS #####"
+sudo cat /var/log/auth.log | grep "sshd\[*\]"* | grep "session opened for user\|preauth" | tail -10 /dev/stdin
+echo ""
+echo "#############################################################"
+cat << "EOF"
+   _   _                       ___           _           _   
+  /_\ | | __ _ _ __   __ _    / _ \_ __ ___ (_) ___  ___| |_ 
+ //_\\| |/ _` | '_ \ / _` |  / /_)/ '__/ _ \| |/ _ \/ __| __|
+/  _  \ | (_| | | | | (_| | / ___/| | | (_) | |  __/ (__| |_ 
+\_/ \_/_|\__,_|_| |_|\__,_| \/    |_|  \___// |\___|\___|\__|
+                                          |__/
+EOF
+echo "#############################################################"
+echo ""

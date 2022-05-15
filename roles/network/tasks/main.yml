@@ -1,0 +1,17 @@
+---
+
+- name: Setting alana hostname
+  template:
+    src: files/hostname
+    dest: /etc/hostname
+
+- name: Setting alana ssh motd
+  template:
+    src: files/01-custom
+    dest: /etc/update-motd.d/01-custom
+
+- name: Setting alana wifi and static ip
+  template:
+    src: files/50-cloud-init.yaml
+    dest: /etc/netplan/50-cloud-init.yaml
+

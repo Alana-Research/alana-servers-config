@@ -1,0 +1,29 @@
+---
+
+- name: Alana group creation
+  group:
+    name: alana
+    gid: 5555
+    state: present
+
+- name: Create alana bin folder
+  file:
+    path: /alana
+    owner: root
+    group: alana
+    mode: '770'
+    state: directory
+
+- name: User creation
+  user:
+    name: "{{ item.name }}" 
+    groups: "{{ item.groups }}" 
+    state: "{{ item.state }}"  
+  with_items: "{{ users }}" 
+
+- name: Add authorized keys
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.public_key }}"
+  with_items: "{{ users }}"
+

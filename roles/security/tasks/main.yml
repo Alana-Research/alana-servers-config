@@ -1,0 +1,41 @@
+---
+- name: Allow sudo without password
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: Disable SSH password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+
+- name: "Disable root login via SSH"
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+  notify: "Restart sshd"
+
+- name: Change SSH port
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^Port"
+    line: "Port {{ ssh_port }}"
+  notify: "Restart sshd"
+
+- name: UFW - Deny all other incoming traffic by default
+  ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
+
+- name: UFW - Allow SSH connections
+  ufw:
+    rule: allow
+    port: "{{ ssh_port }}"
+

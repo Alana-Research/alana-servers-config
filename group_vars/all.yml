@@ -1,0 +1,10 @@
+---
+
+users:
+  - name: "CHANGEME" #CHANGEME
+    groups: "sudo,alana"
+    public_key: "CHANGEME" #CHANGEME
+    state: "present"
+
+docker_compose_version: "1.29.2"
+ssh_port: #CHANGEME
